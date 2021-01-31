@@ -28,13 +28,15 @@ function LogIn() {
   const history =useHistory();
   const location =useLocation();
   let { from } = location.state || { from: { pathname: "/" } };
+ 
 
+ 
 
   const googleProvider = new firebase.auth.GoogleAuthProvider();
   const fbProvider = new firebase.auth.FacebookAuthProvider();
-    const signInHandle= ()=> {
-      firebase.auth()
-  .signInWithPopup(googleProvider)
+
+    const GoogleSignInHandle= ()=> {
+      firebase.auth().signInWithPopup(googleProvider)
   .then(res =>{
     const { displayName,photoURL,email}=res.user;
     const signInUser ={
@@ -45,6 +47,7 @@ function LogIn() {
     }
     console.log(photoURL,displayName,email);
     setUser(signInUser);
+    setLoggedInUser(res.user);
 
     console.log(res);
       })
@@ -69,7 +72,8 @@ function LogIn() {
     // The signed-in user info.
     var user = result.user;
     console.log('fb user after sign In', user);
-
+     
+    setLoggedInUser(result.user);
    
 
     // ...
@@ -196,7 +200,7 @@ function LogIn() {
     <div style={{ textAlign:'center' }}>
       {
              user.isSignedIn ?  <button onClick={signOutHandle}>Sign out</button>:
-             <button onClick={signInHandle}>Google Sign In</button>
+             <button onClick={GoogleSignInHandle}>Google Sign In</button>
 
       }
       <button onClick={fbSignInHandle} >Facebook sign In</button>
